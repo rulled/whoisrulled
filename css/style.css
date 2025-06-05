@@ -228,7 +228,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .projects-section .container { position: relative; z-index: 2; }
 .projects-section .container > h2 { margin-bottom: 4.5rem; }
-.project-item { display: flex; gap: 3rem; margin-bottom: 8rem; align-items: stretch; } /* align-items: stretch makes children same height */
+.project-item { display: flex; gap: 3rem; margin-bottom: 8rem; align-items: flex-start; } /* Let children determine their own height */
 .project-item:last-child { margin-bottom: 0; }
 
 .project-item .project-video { 
