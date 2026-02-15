@@ -1,343 +1,661 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>whoisrulled</title>
-    <link rel="stylesheet" href="css/style.css">
+﻿<!doctype html>
+<html lang="en" vid="0">
+<head vid="1">
+  <meta charset="UTF-8" vid="2">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+  <title vid="4">Maxim Pavlov / Motion</title>
+  <style vid="5">
+    @font-face {
+      font-family: "Helvetica Neue Custom";
+      src: url("./assets/HelveticaNeueRoman.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Helvetica Neue Custom";
+      src: url("./assets/HelveticaNeueMedium.otf") format("opentype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Helvetica Neue Custom";
+      src: url("./assets/HelveticaNeueBold.otf") format("opentype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Helvetica Neue Custom";
+      src: url("./assets/HelveticaNeueItalic.ttf") format("truetype");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    :root {
+      --bg-color: #050709;
+      --text-color: #f2f6f8;
+      --accent-green: #25d345;
+      --accent-pink: #ff66d9;
+      --accent-blue: #3b9ae3;
+      --accent-orange: #ff5e3a;
+      --blur-strength: 64px;
+      --video-global-scale: 1.5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 5%, rgba(60, 90, 130, 0.18), transparent 30%), var(--bg-color);
+      color: var(--text-color);
+      font-family: "Helvetica Neue Custom", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      width: 100%;
+      cursor: default;
+    }
+
+    nav {
+      position: fixed;
+      top: 1.4rem;
+      left: 1.4rem;
+      right: 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 120;
+      mix-blend-mode: difference;
+      color: white;
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      pointer-events: none;
+      text-transform: uppercase;
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    main {
+      padding-top: 14vh;
+      padding-bottom: 8vh;
+      position: relative;
+      z-index: 10;
+    }
+
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 8vh;
+    }
+
+    .project-section {
+      position: relative;
+      min-height: 86vh;
+      width: 100%;
+      overflow: visible;
+      isolation: isolate;
+    }
+
+    .video-container {
+      position: absolute;
+      left: var(--left, 50%);
+      top: var(--top, 52%);
+      transform: translate(-50%, -50%);
+      width: min(
+        calc(var(--w) * var(--s, 1.95) * var(--video-global-scale) * 1px),
+        calc(var(--maxw, 82vw) * var(--video-global-scale)),
+        98vw
+      );
+      aspect-ratio: var(--w) / var(--h);
+      background: var(--video-bg, #101218);
+      z-index: 4;
+      overflow: hidden;
+      border: none;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .project-title {
+      position: absolute;
+      left: var(--tx, 8%);
+      top: var(--ty, 10%);
+      font-size: clamp(2.2rem, 8.5vw, 8rem);
+      font-weight: 500;
+      line-height: 0.82;
+      letter-spacing: -0.045em;
+      text-transform: uppercase;
+      text-align: var(--ta, left);
+      z-index: 12;
+      pointer-events: auto;
+      text-decoration: none;
+      color: inherit;
+    }
+
+
+    .decor-v1-blob,
+    .decor-v3-blob,
+    .footer-circle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.55;
+    }
+
+    .decor-v1-blob {
+      width: var(--bw, 380px);
+      height: var(--bh, 220px);
+      background: var(--bc, var(--accent-green));
+      left: var(--bx, -6%);
+      top: var(--by, -12%);
+      filter: blur(var(--blur-v1, var(--blur-strength)));
+    }
+
+    .decor-v3-blob {
+      width: var(--cw, 300px);
+      height: var(--ch, 160px);
+      background: var(--cc, var(--accent-blue));
+      right: var(--cx, -8%);
+      bottom: var(--cy, -12%);
+      filter: blur(var(--blur-v3, 72px));
+    }
+
+    .decor-v1-trunk {
+      position: absolute;
+      width: 34px;
+      height: 170px;
+      background: var(--accent-pink);
+      right: var(--rx, 14%);
+      bottom: var(--ry, -40px);
+      z-index: 11;
+      opacity: 0.88;
+      pointer-events: none;
+    }
+
+    .decor-v2-arch {
+      position: absolute;
+      left: var(--ax, 50%);
+      top: var(--ay, 8%);
+      transform: translateX(-50%) rotate(var(--ar, 0deg));
+      transform-origin: center;
+      width: var(--aw, 280px);
+      height: var(--ah, 140px);
+      border: 18px solid var(--ac, var(--accent-blue));
+      border-bottom: none;
+      border-radius: 140px 140px 0 0;
+      z-index: 11;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .decor-line-circle {
+      position: absolute;
+      left: var(--lx, 20%);
+      top: var(--ly, 20%);
+      width: var(--ls, 92px);
+      height: var(--ls, 92px);
+      border: 8px solid var(--lc, #8fbad9);
+      border-radius: 50%;
+      z-index: 11;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .decor-line-triangle {
+      position: absolute;
+      left: var(--tx2, 16%);
+      top: var(--ty2, 60%);
+      width: var(--tw, 120px);
+      height: var(--th, 92px);
+      z-index: 11;
+      opacity: 0.9;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to right bottom,
+          transparent calc(50% - 4px),
+          var(--tc, #8aa6ba) calc(50% - 4px) calc(50% + 4px),
+          transparent calc(50% + 4px)
+        ) left top / 50% 100% no-repeat,
+        linear-gradient(
+          to left bottom,
+          transparent calc(50% - 4px),
+          var(--tc, #8aa6ba) calc(50% - 4px) calc(50% + 4px),
+          transparent calc(50% + 4px)
+        ) right top / 50% 100% no-repeat,
+        linear-gradient(var(--tc, #8aa6ba), var(--tc, #8aa6ba)) center bottom / 100% 8px no-repeat;
+    }
+
+    .decor-line-sun {
+      position: absolute;
+      left: var(--sx2, 74%);
+      top: var(--sy2, 10%);
+      width: var(--ss, 90px);
+      height: var(--ss, 90px);
+      border: 7px solid var(--sc2, #ffd083);
+      border-radius: 50%;
+      z-index: 11;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .decor-line-sun::before,
+    .decor-line-sun::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: calc(var(--ss, 90px) + 34px);
+      height: 7px;
+      background: var(--sc2, #ffd083);
+      transform: translate(-50%, -50%);
+    }
+
+    .decor-line-sun::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    /* --- NEW LINE/UI DECOR --- */
+    .decor-ring {
+      position: absolute;
+      left: var(--rx2, 50%);
+      top: var(--ry2, 50%);
+      width: var(--rs, 120px);
+      height: var(--rs, 120px);
+      border: var(--rw, 5px) solid var(--rc, var(--accent-blue));
+      border-radius: 50%;
+      z-index: 9;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .decor-star-4 {
+      position: absolute;
+      left: var(--sx, 50%);
+      top: var(--sy, 50%);
+      width: var(--ss2, 60px);
+      height: var(--ss2, 60px);
+      background: var(--sc, var(--accent-pink));
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      z-index: 11;
+      pointer-events: none;
+      transform: rotate(var(--sr, 0deg));
+    }
+
+    .decor-sparkle {
+      position: absolute;
+      left: var(--spx, 50%);
+      top: var(--spy, 50%);
+      width: var(--sps, 40px);
+      height: var(--sps, 40px);
+      background: var(--spc, var(--text-color));
+      clip-path: polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%);
+      z-index: 12;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .decor-crosshair {
+      position: absolute;
+      left: var(--cx3, 50%);
+      top: var(--cy3, 50%);
+      width: var(--cz, 30px);
+      height: var(--cz, 30px);
+      z-index: 11;
+      pointer-events: none;
+      transform: rotate(var(--cr, 0deg));
+    }
+
+    .decor-crosshair::before,
+    .decor-crosshair::after {
+      content: "";
+      position: absolute;
+      background: var(--cc3, var(--accent-green));
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .decor-crosshair::before {
+      width: 100%;
+      height: var(--ct, 7px);
+    }
+
+    .decor-crosshair::after {
+      width: var(--ct, 7px);
+      height: 100%;
+    }
+
+
+    .decor-v2-dots {
+      position: absolute;
+      left: var(--dx, 72%);
+      top: var(--dy, 76%);
+      display: flex;
+      gap: 6px;
+      z-index: 12;
+      pointer-events: none;
+    }
+
+    .orange-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+    }
+
+    footer {
+      min-height: 45vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      padding: 8vh 1rem 10vh;
+    }
+
+    .contact-header {
+      font-size: clamp(2rem, 8vw, 6rem);
+      line-height: 0.95;
+      position: relative;
+      z-index: 5;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+
+    .contact-list {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      z-index: 5;
+    }
+
+    .contact-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: clamp(0.95rem, 2vw, 1.3rem);
+      border-bottom: 2px solid rgba(255, 102, 217, 0.7);
+      display: inline-block;
+      padding-bottom: 0.1rem;
+    }
+
+    .contact-link:hover {
+      border-bottom-color: rgba(59, 154, 227, 0.9);
+    }
+
+    .footer-blobs {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .footer-circle {
+      width: 240px;
+      height: 240px;
+      background: var(--accent-green);
+      top: 20%;
+      left: 41%;
+      opacity: 0.34;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .footer-dots {
+      position: absolute;
+      top: 62%;
+      left: 56%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      transform: rotate(-10deg);
+      z-index: 2;
+    }
+
+    .footer-note {
+      margin-top: 1.8rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.07em;
+      opacity: 0.62;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    @media (max-width: 980px) {
+      nav {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        font-size: 0.88rem;
+      }
+
+      main {
+        padding-top: 12vh;
+      }
+
+      .projects {
+        gap: 2vh;
+      }
+
+      .project-section {
+        min-height: 68vh;
+      }
+
+      .video-container {
+        left: 50% !important;
+        top: 56% !important;
+        width: min(
+          calc(var(--w) * 2.3 * var(--video-global-scale) * 1px),
+          98vw
+        );
+      }
+
+      .project-title {
+        left: 5% !important;
+        right: auto !important;
+        top: 7% !important;
+        text-align: left !important;
+        font-size: clamp(1.8rem, 12vw, 3.8rem);
+      }
+
+
+      .decor-v2-arch {
+        width: 190px;
+        height: 94px;
+        border-width: 12px;
+      }
+
+      .decor-line-circle,
+      .decor-line-triangle,
+      .decor-line-sun {
+        transform: scale(0.82);
+        transform-origin: center;
+      }
+
+      .decor-star-4 {
+        transform: scale(0.86);
+        transform-origin: center;
+      }
+    }
+  </style>
 </head>
-<body>
+<body vid="6">
+  <nav vid="7">
+    <div class="nav-logo" vid="8">
+      <span vid="9">MAXIM</span>
+      <span vid="10">PAVLOV</span>
+    </div>
+    <div vid="11">
+      <span vid="12">SELECTED WORK</span><br vid="13">
+      <span vid="14">2025 — 2026</span>
+    </div>
+  </nav>
 
-    <header class="site-header" id="siteHeader">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="#">Maxim Pavlov</a>
-            </div>
-            <nav class="main-nav" id="mainNav">
-                <ul>
-                    <li><a href="#hero-section">Главная</a></li>
-                    <li><a href="#projects">Работы</a></li>
-                    <li><a href="#about">Обо мне</a></li>
-                    <li><a href="#contact" class="nav-contact-link">Контакты</a></li>
-                </ul>
-            </nav>
-            <button class="burger-menu" id="burgerMenu" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
-                <span class="burger-menu-line"></span>
-                <span class="burger-menu-line"></span>
-                <span class="burger-menu-line"></span>
-            </button>
+  <main vid="15">
+    <div class="projects" vid="16">
+      <section class="project-section" style="--left:58%; --top:54%; --tx:7%; --ty:6%; --mx:7%; --my:82%;" vid="17">
+        <a class="project-title" href="https://www.youtube.com/watch?v=Wbos0tw7Ywk" target="_blank" rel="noopener noreferrer" vid="18">SQWORE<br vid="19">OHWOW</a>
+        <div class="video-container" style="--w:426; --h:240; --s:1.7; --video-bg:#0d1312;" vid="20">
+          <iframe src="https://player.vimeo.com/video/1090646757?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - shqcore" vid="21"></iframe>
         </div>
-    </header>
+        <div class="decor-v1-blob" style="--bc:#143b28; --bw:430px; --bh:250px; --bx:-9%; --by:2%;" vid="22"></div>
+        <div class="decor-v1-trunk" style="--rx:20%; --ry:-34px;" vid="24"></div>
+      </section>
 
-    <section class="hero" id="hero-section">
-        <div class="container">
-            <h1 class="animate-on-scroll fade-in-up delay-1">Maxim Pavlov</h1>
-            <p class="subtitle animate-on-scroll fade-in-up delay-2">art director, motion-design, video production</p>
+      <section class="project-section" style="--left:39%; --top:55%; --tx:60%; --ty:13%; --ta:right; --mx:60%; --my:81%;" vid="26">
+        <a class="project-title" href="https://youtu.be/2kKC777_JNQ?si=rAgZRtFrS-io-dgq" target="_blank" rel="noopener noreferrer" vid="27">SQWORE<br vid="28">DRUNK</a>
+        <div class="video-container" style="--w:426; --h:240; --s:1.64; --video-bg:#121f24;" vid="29">
+          <iframe src="https://player.vimeo.com/video/1163047065?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - DRUNK" vid="30"></iframe>
         </div>
-    </section>
+        <div class="decor-v3-blob" style="--cc:#1b5878; --cw:340px; --ch:160px; --cx:8%; --cy:5%;" vid="32"></div>
+        <div class="decor-v2-dots" style="--dx:68%; --dy:72%;" vid="33"><div class="orange-dot" vid="34"></div><div class="orange-dot" vid="35"></div><div class="orange-dot" vid="36"></div></div>
+      </section>
 
-    <main>
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <h2 class="animate-on-scroll fade-in-up">Последние работы</h2>
-
-                <div class="project-item layout-video-left animate-on-scroll fade-in-up">
-                    <div class="project-video">
-                        <div style="padding:56.25% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-1" src="https://player.vimeo.com/video/1090646757?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="sqwore - shqcore"></iframe>
-                        </div>
-                    </div>
-                    <div class="project-description">
-                        <h3><a href="https://www.instagram.com/reel/DJ1KvNkMEbK/" target="_blank" rel="noopener noreferrer">sqwore - shqcore</a></h3>
-                        <p class="project-meta">editing, color correction, vfx</p>
-                        <p>тизер к треку с альбома. отвечал за монтаж, цветкор, а также конечную заставку. вместе с арт-директором volhuena нашли необходимые референсы, воплотили общее видение и сделали тизер максимально цепляющим.</p>
-                    </div>
-                </div>
-
-                <div class="project-item layout-video-right animate-on-scroll fade-in-up">
-                    <div class="project-description">
-                        <h3><a href="https://youtu.be/ALYyniGTHtc/" target="_blank" rel="noopener noreferrer">kayyo - ILM</a></h3>
-                        <p class="project-meta">editing, vfx</p>
-                        <p>главной задачей было выжать максимум динамики из кадров камкодера для тизера альбома.</p>
-                    </div>
-                    <div class="project-video">
-                        <div style="padding:80% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-2" src="https://player.vimeo.com/video/1090666938?h=bf2ee708f9&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="kayyo - ILM"></iframe>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-item layout-video-left animate-on-scroll fade-in-up">
-                    <div class="project-video">
-                        <div style="padding:66.75% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-3" src="https://player.vimeo.com/video/1090653148?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="sqwore - protagonist"></iframe>
-                        </div>
-                    </div>
-                    <div class="project-description">
-                        <h3><a href="https://youtu.be/sw_rJXu8NpY" target="_blank" rel="noopener noreferrer">sqwore - protagonist</a></h3>
-                        <p class="project-meta">directed, camera, editing</p>
-                        <p>в этом проекте я взял на себя полный цикл. задача была – создать атмосферное муд-видео, которое бы тонко передавало настроение трека. искал простые, но стильные решения.</p>
-                    </div>
-                </div>
-
-                <div class="project-item layout-video-right animate-on-scroll fade-in-up">
-                    <div class="project-description">
-                        <h3><a href="https://youtu.be/UJYSnJipLuc" target="_blank" rel="noopener noreferrer">thes1cko - молния mcqueen</a></h3>
-                        <p class="project-meta">editing, color correction, vfx</p>
-                        <p>стояла задача сделать клип максимально динамичным. я сосредоточился на получении динамики за счет сумасшедшой смены кадров, а атмосферу удалось получить за счет правильной цветокоррекции.</p>
-                    </div>
-                    <div class="project-video">
-                        <div style="padding:41.04% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-4" src="https://player.vimeo.com/video/1090647765?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="thes1cko - молния mcqueen"></iframe>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-item layout-video-left animate-on-scroll fade-in-up">
-                    <div class="project-video">
-                        <div style="padding:42.5% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-5" src="https://player.vimeo.com/video/1090647026?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="tears, OYO, drowsyy — актриса"></iframe>
-                        </div>
-                    </div>
-                    <div class="project-description">
-                        <h3><a href="https://youtu.be/F0CANwIEoKs" target="_blank" rel="noopener noreferrer">tears, OYO, drowsyy — актриса</a></h3>
-                        <p class="project-meta">directed, camera, editing</p>
-                        <p>задача для этого тизера – сделать простое, но красивое музыкальное видео. я отвечал за весь процесс, от разработки концепции и съемки до монтажа, стремясь создать визуально приятный и лаконичный ролик, который бы легко знакомил с треком.</p>
-                    </div>
-                </div>
-
-                <div class="project-item layout-video-right animate-on-scroll fade-in-up">
-                    <div class="project-description">
-                        <h3><a href="https://www.instagram.com/p/DJo9Dstsl9D/" target="_blank" rel="noopener noreferrer">kayyo, emi4ka - overhype sample kit</a></h3>
-                        <p class="project-meta">motion design</p>
-                        <p>здесь я анимировал обложку для сэмпл-кита, чтобы создать живую визуализацию под музыку. для этого использовал связку freqreact + tracery, чтобы элементы дизайна реагировали на звук и создавали интересный визуальный опыт.</p>
-                    </div>
-                    <div class="project-video">
-                        <div style="padding:100% 0 0 0;position:relative;" class="vimeo-responsive-wrapper">
-                            <iframe id="vimeo-player-6" src="https://player.vimeo.com/video/1090646413?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="kayyo, emi4ka - overhype sample kit"></iframe>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="about" class="about-section">
-            <div class="container">
-                <h2 class="animate-on-scroll fade-in-up">Обо мне</h2>
-                <p class="animate-on-scroll fade-in-up delay-1">привет! меня зовут максим и я очень люблю создавать видео. моя цель - доносить до людей идеи заказчиков при помощи визуала. я верю, что качественный визуал поможет любому проекту выделиться и привлечь внимание. в основном, я специализируюсь на музыкальных клипах, тизерах и видеомаппинге.</p>
-                <p class="animate-on-scroll fade-in-up delay-2">всегда открыт для ваших предложений и идей!</p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer" id="contact">
-        <div class="container">
-            <ul class="social-links animate-on-scroll fade-in-up delay-1">
-                <li><a href="https://www.instagram.com/whoisrulled/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-                <li><a href="https://t.me/rulled" target="_blank" rel="noopener noreferrer">Telegram</a></li>
-                <li><a href="mailto:rulled@vk.com">Почта</a></li>
-            </ul>
-            <p class="copyright animate-on-scroll fade-in-up delay-2">© <span id="year"></span> whoisrulled</p>
+      <section class="project-section" style="--left:61%; --top:58%; --tx:8%; --ty:66%; --mx:8%; --my:14%;" vid="38">
+        <a class="project-title" href="https://t.me/volhuena/12553" target="_blank" rel="noopener noreferrer" vid="39">SQWORE TOUR<br vid="40">SCREENS</a>
+        <div class="video-container" style="--w:426; --h:240; --s:1.74; --video-bg:#23210d;" vid="41">
+          <iframe src="https://player.vimeo.com/video/1163048368?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore tour screens" vid="42"></iframe>
         </div>
-    </footer>
+        <div class="decor-v1-blob" style="--bc:#6e6520; --bw:460px; --bh:210px; --bx:58%; --by:4%;" vid="43"></div>
+      </section>
 
-    <script src="https://player.vimeo.com/api/player.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Copyright Year ---
-            document.getElementById('year').textContent = new Date().getFullYear();
+      <section class="project-section" style="--left:32%; --top:50%; --tx:57%; --ty:9%; --ta:right; --mx:57%; --my:76%;" vid="47">
+        <a class="project-title" href="https://youtu.be/ALYyniGTHtc?si=EG0XWE1aQn_rRE2c" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.8rem, 6.8vw, 6rem);" vid="48">KAYYO<br vid="49">ILM</a>
+        <div class="video-container" style="--w:300; --h:240; --s:1.8; --maxw:72vw; --video-bg:#010101;" vid="50">
+          <iframe src="https://player.vimeo.com/video/1090666938?h=bf2ee708f9&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="kayyo - ILM" vid="51"></iframe>
+        </div>
+        <div class="decor-v3-blob" style="--cc:#0b2a3d; --cw:320px; --ch:220px; --cx:4%; --cy:16%;" vid="52"></div>
+        <div class="decor-crosshair" style="--cx3:76%; --cy3:20%; --cc3:var(--accent-pink); --cz:30px; --ct:7px;" vid="53"></div>
+        <div class="decor-crosshair" style="--cx3:80%; --cy3:25%; --cc3:var(--accent-blue); --cz:26px; --ct:7px;" vid="54"></div>
+      </section>
 
-            // --- Sticky Header ---
-            const siteHeader = document.getElementById('siteHeader');
-            const scrollThreshold = 50; 
+      <section class="project-section" style="--left:66%; --top:54%; --tx:7%; --ty:12%; --mx:7%; --my:78%;" vid="59">
+        <a class="project-title" href="https://youtu.be/FlKO5gcpfys?si=vPTJIK19jkysoU3g" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.7rem, 6.2vw, 5.2rem);" vid="60">МОДЕУС<br vid="61">I WANT MORE</a>
+        <div class="video-container" style="--w:300; --h:240; --s:1.7; --video-bg:#292a2b;" vid="62">
+          <iframe src="https://player.vimeo.com/video/1163049988?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="модеус - i want more" vid="63"></iframe>
+        </div>
+        <div class="decor-v1-blob" style="--bc:#696c6f; --bw:280px; --bh:210px; --bx:67%; --by:-6%;" vid="64"></div>
+        <div class="decor-crosshair" style="--cx3:18%; --cy3:20%; --cc3:#9aaab8; --cz:220px; --ct:25px; --cr:12deg;" vid="64b"></div>
+      </section>
 
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > scrollThreshold) {
-                    siteHeader.classList.add('header-visible');
-                } else {
-                    siteHeader.classList.remove('header-visible');
-                }
-            });
-            
-            // --- Blobs Visibility Control ---
-            const heroSectionForBlobs = document.getElementById('hero-section');
-            const bodyForBlobs = document.body;
-            let blobsActivated = false; 
+      <section class="project-section" style="--left:42%; --top:56%; --tx:54%; --ty:63%; --ta:right; --mx:54%; --my:16%;" vid="67">
+        <a class="project-title" href="https://youtu.be/sw_rJXu8NpY?si=OiZFcIpe4v_jBfZl" target="_blank" rel="noopener noreferrer" style="color:#d5dbd4; font-size:clamp(2rem, 7.3vw, 6.6rem);" vid="68">SQWORE<br vid="69">PROTAGONIST</a>
+        <div class="video-container" style="--w:360; --h:240; --s:1.7; --video-bg:#b9c0b8;" vid="70">
+          <iframe src="https://player.vimeo.com/video/1090653148?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - protagonist" vid="71"></iframe>
+        </div>
+        <div class="decor-v1-trunk" style="--rx:72%; --ry:48px; background:#b1c0b4; height:130px;" vid="72"></div>
+        <div class="decor-v2-dots" style="--dx:57%; --dy:25%;" vid="73"><div class="orange-dot" vid="74"></div><div class="orange-dot" vid="75"></div><div class="orange-dot" vid="76"></div></div>
+      </section>
 
-            function toggleBlobs() {
-                // console.log("toggleBlobs function called. blobsActivated: " + blobsActivated); // Для отладки
+      <section class="project-section" style="--left:64%; --top:51%; --tx:8%; --ty:11%; --mx:8%; --my:79%;" vid="78">
+        <a class="project-title" href="https://t.me/eikkoeikko/1126" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.9rem, 7.3vw, 6.2rem);" vid="79">EIKKO<br vid="80">SERIOUS SAM</a>
+        <div class="video-container" style="--w:320; --h:240; --s:1.72; --video-bg:#061319;" vid="81">
+          <iframe src="https://player.vimeo.com/video/1163049663?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="eikko - serious sam" vid="82"></iframe>
+        </div>
+        <div class="decor-v3-blob" style="--cc:#0f4f6f; --cw:420px; --ch:180px; --cx:-3%; --cy:3%;" vid="83"></div>
+      </section>
 
-                if (!heroSectionForBlobs) { // Если нет Hero секции, показываем кляксы сразу
-                    if (!bodyForBlobs.classList.contains('blobs-visible')) {
-                        bodyForBlobs.classList.add('blobs-visible');
-                        // console.log("Class 'blobs-visible' ADDED to body (no hero)."); // Для отладки
-                    }
-                    blobsActivated = true; 
-                    window.removeEventListener('scroll', toggleBlobs); // Больше не нужно проверять
-                    return;
-                }
+      <section class="project-section" style="--left:37%; --top:57%; --tx:58%; --ty:10%; --ta:right; --mx:58%; --my:80%;" vid="86">
+        <a class="project-title" href="https://youtu.be/YsEGk65gJo4?si=DC0cycfNmZ6L426X" target="_blank" rel="noopener noreferrer" vid="87">SQWORE<br vid="88">BEACH EPISODE</a>
+        <div class="video-container" style="--w:426; --h:240; --s:1.72; --video-bg:#718aca;" vid="89">
+          <iframe src="https://player.vimeo.com/video/1163049430?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore beach episode" vid="90"></iframe>
+        </div>
+        <div class="decor-v1-blob" style="--bc:#5e7fcb; --bw:410px; --bh:220px; --bx:55%; --by:58%;" vid="91"></div>
+        <div class="decor-line-sun" style="--sx2:72%; --sy2:30%; --ss:82px; --sc2:#dce9a8;" vid="91a"></div>
+        <div class="decor-v2-dots" style="--dx:20%; --dy:19%;" vid="92"><div class="orange-dot" vid="93"></div><div class="orange-dot" vid="94"></div><div class="orange-dot" vid="95"></div><div class="orange-dot" vid="96"></div></div>
+      </section>
 
-                const heroRect = heroSectionForBlobs.getBoundingClientRect();
-                
-                // Кляксы появляются, когда низ Hero секции почти ушел за верхнюю границу экрана
-                if (heroRect.bottom < 50) { // 50px - небольшой буфер
-                    if (!blobsActivated) { 
-                        bodyForBlobs.classList.add('blobs-visible');
-                        // console.log("Class 'blobs-visible' ADDED to body."); // Для отладки
-                        blobsActivated = true; 
-                        // Если кляксы не должны исчезать, можно удалить слушатель:
-                        // window.removeEventListener('scroll', toggleBlobs); 
-                    }
-                } else {
-                    // Если нужно, чтобы кляксы исчезали при возврате на Hero (сейчас они остаются видимыми после активации)
-                    // if (blobsActivated && heroRect.bottom >= 50) { 
-                    //      bodyForBlobs.classList.remove('blobs-visible');
-                    //      console.log("Class 'blobs-visible' REMOVED from body."); // Для отладки
-                    //      blobsActivated = false; 
-                    // }
-                }
-            }
-            
-            toggleBlobs(); // Первоначальная проверка при загрузке
-            window.addEventListener('scroll', toggleBlobs);
+      <section class="project-section" style="--left:59%; --top:53%; --tx:9%; --ty:67%; --mx:9%; --my:18%;" vid="98">
+        <a class="project-title" href="https://youtu.be/UJYSnJipLuc?si=EjLJoaYRAcSiviDn" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.6rem, 6vw, 4.8rem); color:#e1f2ea;" vid="99">THES1CKO<br vid="100">МОЛНИЯ MCQUEEN</a>
+        <div class="video-container" style="--w:426; --h:174; --s:1.72; --video-bg:#d7f6e9;" vid="101">
+          <iframe src="https://player.vimeo.com/video/1090647765?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="thes1cko - молния mcqueen" vid="102"></iframe>
+        </div>
+        <div class="decor-star-4" style="--sx:63%; --sy:37%; --ss2:140px; --sc:#a8d8c3; --sr:-54deg;" vid="103"></div>
+      </section>
 
+      <section class="project-section" style="--left:44%; --top:55%; --tx:58%; --ty:13%; --ta:right; --mx:58%; --my:79%;" vid="106">
+        <a class="project-title" href="https://youtu.be/F0CANwIEoKs?si=KCZaEL2tuYjQQXga" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.5rem, 5.8vw, 4.6rem);" vid="107">TEARS, OYO, DROWSYY<br vid="108">АКТРИСА</a>
+        <div class="video-container" style="--w:426; --h:182; --s:1.72; --video-bg:#0c1522;" vid="109">
+          <iframe src="https://player.vimeo.com/video/1090647026?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="tears, OYO, drowsyy - актриса" vid="110"></iframe>
+        </div>
+        <div class="decor-v3-blob" style="--cc:#35577a; --cw:410px; --ch:220px; --cx:58%; --cy:-5%;" vid="111"></div>
+        <div class="decor-v2-dots" style="--dx:12%; --dy:74%;" vid="112"><div class="orange-dot" vid="113"></div><div class="orange-dot" vid="114"></div><div class="orange-dot" vid="115"></div></div>
+      </section>
 
-            // --- Burger Menu (Compact Dropdown) ---
-            const burgerMenu = document.getElementById('burgerMenu');
-            const mainNav = document.getElementById('mainNav');
+      <section class="project-section" style="--left:66%; --top:53%; --tx:7%; --ty:12%; --mx:7%; --my:80%;" vid="117">
+        <a class="project-title" href="https://www.instagram.com/p/DJo9Dstsl9D" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.4rem, 5vw, 4rem); color:#d7d5d2;" vid="118">KAYYO, EMI4KA<br vid="119">OVERHYPE SAMPLE KIT</a>
+        <div class="video-container" style="--w:240; --h:240; --s:1.8; --video-bg:#f4f3f1;" vid="120">
+          <iframe src="https://player.vimeo.com/video/1090646413?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="kayyo, emi4ka - overhype sample kit" vid="121"></iframe>
+        </div>
+        <div class="decor-v1-blob" style="--bc:#c7c5bf; --bw:300px; --bh:230px; --bx:62%; --by:6%;" vid="122"></div>
+      </section>
+    </div>
+  </main>
 
-            burgerMenu.addEventListener('click', function() {
-                const isExpanded = burgerMenu.getAttribute('aria-expanded') === 'true' || false;
-                burgerMenu.setAttribute('aria-expanded', !isExpanded);
-                burgerMenu.classList.toggle('active');
-                mainNav.classList.toggle('active'); 
-            });
+  <footer vid="125">
+    <div class="footer-blobs" vid="126">
+      <div class="footer-circle" vid="127"></div>
+    </div>
 
-            document.addEventListener('click', function(event) {
-                const isClickInsideNav = mainNav.contains(event.target);
-                const isClickOnBurger = burgerMenu.contains(event.target);
+    <div class="footer-dots" vid="128">
+      <div class="orange-dot" vid="129"></div>
+      <div class="orange-dot" vid="130"></div>
+      <div class="orange-dot" vid="131"></div>
+      <div class="orange-dot" vid="132"></div>
+    </div>
 
-                if (!isClickInsideNav && !isClickOnBurger && mainNav.classList.contains('active')) {
-                    burgerMenu.click();
-                }
-            });
+    <div class="contact-header" vid="133">
+      LET'S <span style="color: var(--accent-blue);" vid="134">MAKE</span><br vid="135">
+      SOMETHING
+    </div>
 
+    <div class="contact-list" vid="136">
+      <a href="mailto:rulled@vk.com" class="contact-link" vid="137">rulled@vk.com</a>
+      <a href="https://t.me/rulled" target="_blank" rel="noopener noreferrer" class="contact-link" vid="138">telegram</a>
+      <a href="https://www.instagram.com/whoisrulled/" target="_blank" rel="noopener noreferrer" class="contact-link" vid="139">instagram</a>
+    </div>
 
-            // --- Smooth Scroll & Active Link Highlighting & Close Mobile Menu ---
-            const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
-            const sections = [];
-            navLinks.forEach(link => {
-                const sectionId = link.getAttribute('href');
-                const section = document.querySelector(sectionId);
-                if (section) {
-                    sections.push(section);
-                }
-            });
-             if (!sections.find(s => s.id === 'hero-section') && document.getElementById('hero-section')) {
-                sections.unshift(document.getElementById('hero-section'));
-            }
+    <div class="footer-note" vid="140">
+      BASED WORLDWIDE / AVAILABLE FOR NEW PROJECTS
+    </div>
+  </footer>
 
+  <script vid="141">
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
 
-            navLinks.forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+      document.querySelectorAll('.decor-v1-blob, .decor-v3-blob, .footer-circle').forEach((blob) => {
+        blob.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+      });
 
-                    if (targetElement) {
-                        const headerOffset = siteHeader.classList.contains('header-visible') ? siteHeader.offsetHeight : 0;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth"
-                        });
-
-                        if (mainNav.classList.contains('active') && window.innerWidth <= 1024) {
-                             burgerMenu.click(); 
-                        }
-                    }
-                });
-            });
-
-            function updateActiveLink() {
-                let currentSectionId = '';
-                const headerHeight = siteHeader.offsetHeight;
-                const offsetTriggerPoint = window.innerHeight * 0.4; 
-
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - headerHeight - offsetTriggerPoint;
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    
-                    if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionBottom) {
-                        currentSectionId = '#' + section.id;
-                    }
-                });
-                
-                if (!currentSectionId) {
-                    if (window.pageYOffset < sections[0].offsetTop - headerHeight - offsetTriggerPoint) {
-                        currentSectionId = '#' + sections[0].id;
-                    } else if (window.pageYOffset + window.innerHeight >= document.documentElement.scrollHeight - 50) { 
-                        currentSectionId = '#' + sections[sections.length -1].id;
-                    }
-                }
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === currentSectionId) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-            
-            window.addEventListener('scroll', updateActiveLink);
-            window.addEventListener('resize', updateActiveLink); 
-            updateActiveLink(); 
-
-            // --- Vimeo Aspect Ratio ---
-            const vimeoIframes = document.querySelectorAll('iframe[id^="vimeo-player-"]');
-            vimeoIframes.forEach(iframe => {
-                const player = new Vimeo.Player(iframe);
-                const wrapper = iframe.parentElement; 
-
-                player.ready().then(() => {
-                    return player.getVideoWidth();
-                }).then(videoWidth => {
-                    player.getVideoHeight().then(videoHeight => {
-                        if (videoWidth > 0 && videoHeight > 0) {
-                            const aspectRatio = (videoHeight / videoWidth) * 100;
-                            wrapper.style.paddingTop = aspectRatio + '%';
-                        }
-                    });
-                }).catch(function(error) {
-                    // console.error('Error adjusting Vimeo aspect ratio for player ' + iframe.id + ':', error);
-                });
-            });
-
-            // --- Scroll-triggered Animations ---
-            const animatedElements = document.querySelectorAll('.animate-on-scroll');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1 
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            animatedElements.forEach(el => {
-                observer.observe(el);
-            });
-        });
-    </script>
-
+      document.querySelectorAll('.project-title').forEach((title) => {
+        title.style.transform = `translate(${x * -9}px, ${y * -9}px)`;
+      });
+    });
+  </script>
 </body>
 </html>
