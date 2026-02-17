@@ -774,6 +774,7 @@
           return;
         }
 
+        video.preload = "auto";
         video.querySelectorAll("source[data-src]").forEach((source) => {
           source.src = source.dataset.src;
           source.removeAttribute("data-src");
@@ -791,6 +792,9 @@
         }
       };
 
+      // Load all previews up-front so scrolling does not reveal unloaded videos.
+      videos.forEach((video) => loadVideo(video));
+
       if (!("IntersectionObserver" in window)) {
         videos.forEach(playVideo);
         return;
@@ -807,8 +811,8 @@
         });
       }, {
         root: null,
-        rootMargin: "220px 0px",
-        threshold: 0.2
+        rootMargin: "1000px 0px",
+        threshold: 0.01
       });
 
       videos.forEach((video) => observer.observe(video));

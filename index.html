@@ -894,7 +894,7 @@
         previewVideo.muted = true;
         previewVideo.loop = true;
         previewVideo.playsInline = true;
-        previewVideo.preload = "none";
+        previewVideo.preload = "auto";
         previewVideo.poster = previewData.poster;
         previewVideo.setAttribute("disablepictureinpicture", "");
 
@@ -916,8 +916,10 @@
         return;
       }
 
+      // Preload all local previews up-front to avoid visible pop-in while scrolling.
+      containers.forEach((container) => loadPreview(container));
+
       const activateContainer = (container) => {
-        loadPreview(container);
         const previewVideo = container.querySelector(".preview-video");
         safePlayMedia(previewVideo);
         loadVimeo(container);
@@ -955,12 +957,12 @@
         });
       }, {
         root: null,
-        rootMargin: "320px 0px",
-        threshold: 0.18
+        rootMargin: "1200px 0px",
+        threshold: 0.01
       });
 
       containers.forEach((container) => observer.observe(container));
-      containers.slice(0, 2).forEach((container) => activateContainer(container));
+      containers.slice(0, 4).forEach((container) => activateContainer(container));
     }
 
     buildVideoLayers();
