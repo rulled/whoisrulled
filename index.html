@@ -1,9 +1,54 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" vid="0">
 <head vid="1">
   <meta charset="UTF-8" vid="2">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
   <title vid="4">Maxim Pavlov / Motion</title>
+  <script>
+    (function () {
+      var isMobilePage = /\/mobile\.html$/i.test(window.location.pathname);
+      var params = new URLSearchParams(window.location.search);
+      var forcedView = params.get("view");
+
+      function redirectTo(fileName) {
+        var target = new URL(fileName, window.location.href);
+        target.search = window.location.search;
+        target.hash = window.location.hash;
+        if (target.pathname !== window.location.pathname) {
+          window.location.replace(target.toString());
+        }
+      }
+
+      if (forcedView === "mobile") {
+        if (!isMobilePage) {
+          redirectTo("mobile.html");
+        }
+        return;
+      }
+
+      if (forcedView === "desktop") {
+        if (isMobilePage) {
+          redirectTo("index.html");
+        }
+        return;
+      }
+
+      var ua = navigator.userAgent || "";
+      var uaSaysMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+      var coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      var narrowViewport = window.matchMedia("(max-width: 980px)").matches;
+      var isMobileDevice = uaSaysMobile || (coarsePointer && narrowViewport);
+
+      if (isMobileDevice && !isMobilePage) {
+        redirectTo("mobile.html");
+        return;
+      }
+
+      if (!isMobileDevice && isMobilePage) {
+        redirectTo("index.html");
+      }
+    })();
+  </script>
   <style vid="5">
     @font-face {
       font-family: "Helvetica Neue Custom";
@@ -125,11 +170,49 @@
       border: none;
     }
 
-    .video-container iframe {
+    .video-container iframe,
+    .video-container .vimeo-frame {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
       display: block;
+    }
+
+    .video-preview-link {
+      position: absolute;
+      inset: 0;
+      display: block;
+      z-index: 5;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 420ms ease;
+    }
+
+    .preview-video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: var(--video-bg, #101218);
+    }
+
+    .vimeo-frame {
+      z-index: 6;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 520ms ease;
+    }
+
+    .video-container.vimeo-ready .vimeo-frame {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-container.vimeo-ready .video-preview-link {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .project-title {
@@ -517,7 +600,7 @@
   <main vid="15">
     <div class="projects" vid="16">
       <section class="project-section" style="--left:58%; --top:54%; --tx:7%; --ty:6%; --mx:7%; --my:82%;" vid="17">
-        <a class="project-title" href="https://www.youtube.com/watch?v=Wbos0tw7Ywk" target="_blank" rel="noopener noreferrer" vid="18">SQWORE<br vid="19">OHWOW</a>
+        <a class="project-title" href="https://vimeo.com/1090646757" target="_blank" rel="noopener noreferrer" vid="18">SQWORE<br vid="19">OHWOW</a>
         <div class="video-container" style="--w:426; --h:240; --s:1.7; --video-bg:#0d1312;" vid="20">
           <iframe src="https://player.vimeo.com/video/1090646757?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - shqcore" vid="21"></iframe>
         </div>
@@ -526,7 +609,7 @@
       </section>
 
       <section class="project-section" style="--left:39%; --top:55%; --tx:60%; --ty:13%; --ta:right; --mx:60%; --my:81%;" vid="26">
-        <a class="project-title" href="https://youtu.be/2kKC777_JNQ?si=rAgZRtFrS-io-dgq" target="_blank" rel="noopener noreferrer" vid="27">SQWORE<br vid="28">DRUNK</a>
+        <a class="project-title" href="https://vimeo.com/1163047065" target="_blank" rel="noopener noreferrer" vid="27">SQWORE<br vid="28">DRUNK</a>
         <div class="video-container" style="--w:426; --h:240; --s:1.64; --video-bg:#121f24;" vid="29">
           <iframe src="https://player.vimeo.com/video/1163047065?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - DRUNK" vid="30"></iframe>
         </div>
@@ -535,7 +618,7 @@
       </section>
 
       <section class="project-section" style="--left:61%; --top:58%; --tx:8%; --ty:66%; --mx:8%; --my:14%;" vid="38">
-        <a class="project-title" href="https://t.me/volhuena/12553" target="_blank" rel="noopener noreferrer" vid="39">SQWORE TOUR<br vid="40">SCREENS</a>
+        <a class="project-title" href="https://vimeo.com/1163048368" target="_blank" rel="noopener noreferrer" vid="39">SQWORE TOUR<br vid="40">SCREENS</a>
         <div class="video-container" style="--w:426; --h:240; --s:1.74; --video-bg:#23210d;" vid="41">
           <iframe src="https://player.vimeo.com/video/1163048368?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore tour screens" vid="42"></iframe>
         </div>
@@ -543,7 +626,7 @@
       </section>
 
       <section class="project-section" style="--left:32%; --top:50%; --tx:57%; --ty:9%; --ta:right; --mx:57%; --my:76%;" vid="47">
-        <a class="project-title" href="https://youtu.be/ALYyniGTHtc?si=EG0XWE1aQn_rRE2c" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.8rem, 6.8vw, 6rem);" vid="48">KAYYO<br vid="49">ILM</a>
+        <a class="project-title" href="https://vimeo.com/1090666938/bf2ee708f9" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.8rem, 6.8vw, 6rem);" vid="48">KAYYO<br vid="49">ILM</a>
         <div class="video-container" style="--w:300; --h:240; --s:1.8; --maxw:72vw; --video-bg:#010101;" vid="50">
           <iframe src="https://player.vimeo.com/video/1090666938?h=bf2ee708f9&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="kayyo - ILM" vid="51"></iframe>
         </div>
@@ -553,7 +636,7 @@
       </section>
 
       <section class="project-section" style="--left:66%; --top:54%; --tx:7%; --ty:12%; --mx:7%; --my:78%;" vid="59">
-        <a class="project-title" href="https://youtu.be/FlKO5gcpfys?si=vPTJIK19jkysoU3g" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.7rem, 6.2vw, 5.2rem);" vid="60">МОДЕУС<br vid="61">I WANT MORE</a>
+        <a class="project-title" href="https://vimeo.com/1163049988" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.7rem, 6.2vw, 5.2rem);" vid="60">МОДЕУС<br vid="61">I WANT MORE</a>
         <div class="video-container" style="--w:300; --h:240; --s:1.7; --video-bg:#292a2b;" vid="62">
           <iframe src="https://player.vimeo.com/video/1163049988?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="модеус - i want more" vid="63"></iframe>
         </div>
@@ -562,7 +645,7 @@
       </section>
 
       <section class="project-section" style="--left:42%; --top:56%; --tx:54%; --ty:63%; --ta:right; --mx:54%; --my:16%;" vid="67">
-        <a class="project-title" href="https://youtu.be/sw_rJXu8NpY?si=OiZFcIpe4v_jBfZl" target="_blank" rel="noopener noreferrer" style="color:#d5dbd4; font-size:clamp(2rem, 7.3vw, 6.6rem);" vid="68">SQWORE<br vid="69">PROTAGONIST</a>
+        <a class="project-title" href="https://vimeo.com/1090653148" target="_blank" rel="noopener noreferrer" style="color:#d5dbd4; font-size:clamp(2rem, 7.3vw, 6.6rem);" vid="68">SQWORE<br vid="69">PROTAGONIST</a>
         <div class="video-container" style="--w:360; --h:240; --s:1.7; --video-bg:#b9c0b8;" vid="70">
           <iframe src="https://player.vimeo.com/video/1090653148?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore - protagonist" vid="71"></iframe>
         </div>
@@ -571,7 +654,7 @@
       </section>
 
       <section class="project-section" style="--left:64%; --top:51%; --tx:8%; --ty:11%; --mx:8%; --my:79%;" vid="78">
-        <a class="project-title" href="https://t.me/eikkoeikko/1126" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.9rem, 7.3vw, 6.2rem);" vid="79">EIKKO<br vid="80">SERIOUS SAM</a>
+        <a class="project-title" href="https://vimeo.com/1163049663" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.9rem, 7.3vw, 6.2rem);" vid="79">EIKKO<br vid="80">SERIOUS SAM</a>
         <div class="video-container" style="--w:320; --h:240; --s:1.72; --video-bg:#061319;" vid="81">
           <iframe src="https://player.vimeo.com/video/1163049663?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="eikko - serious sam" vid="82"></iframe>
         </div>
@@ -579,7 +662,7 @@
       </section>
 
       <section class="project-section" style="--left:37%; --top:57%; --tx:58%; --ty:10%; --ta:right; --mx:58%; --my:80%;" vid="86">
-        <a class="project-title" href="https://youtu.be/YsEGk65gJo4?si=DC0cycfNmZ6L426X" target="_blank" rel="noopener noreferrer" vid="87">SQWORE<br vid="88">BEACH EPISODE</a>
+        <a class="project-title" href="https://vimeo.com/1163049430" target="_blank" rel="noopener noreferrer" vid="87">SQWORE<br vid="88">BEACH EPISODE</a>
         <div class="video-container" style="--w:426; --h:240; --s:1.72; --video-bg:#718aca;" vid="89">
           <iframe src="https://player.vimeo.com/video/1163049430?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="sqwore beach episode" vid="90"></iframe>
         </div>
@@ -589,7 +672,7 @@
       </section>
 
       <section class="project-section" style="--left:59%; --top:53%; --tx:9%; --ty:67%; --mx:9%; --my:18%;" vid="98">
-        <a class="project-title" href="https://youtu.be/UJYSnJipLuc?si=EjLJoaYRAcSiviDn" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.6rem, 6vw, 4.8rem); color:#e1f2ea;" vid="99">THES1CKO<br vid="100">МОЛНИЯ MCQUEEN</a>
+        <a class="project-title" href="https://vimeo.com/1090647765" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.6rem, 6vw, 4.8rem); color:#e1f2ea;" vid="99">THES1CKO<br vid="100">МОЛНИЯ MCQUEEN</a>
         <div class="video-container" style="--w:426; --h:174; --s:1.72; --video-bg:#d7f6e9;" vid="101">
           <iframe src="https://player.vimeo.com/video/1090647765?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="thes1cko - молния mcqueen" vid="102"></iframe>
         </div>
@@ -597,7 +680,7 @@
       </section>
 
       <section class="project-section" style="--left:44%; --top:55%; --tx:58%; --ty:13%; --ta:right; --mx:58%; --my:79%;" vid="106">
-        <a class="project-title" href="https://youtu.be/F0CANwIEoKs?si=KCZaEL2tuYjQQXga" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.5rem, 5.8vw, 4.6rem);" vid="107">TEARS, OYO, DROWSYY<br vid="108">АКТРИСА</a>
+        <a class="project-title" href="https://vimeo.com/1090647026" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.5rem, 5.8vw, 4.6rem);" vid="107">TEARS, OYO, DROWSYY<br vid="108">АКТРИСА</a>
         <div class="video-container" style="--w:426; --h:182; --s:1.72; --video-bg:#0c1522;" vid="109">
           <iframe src="https://player.vimeo.com/video/1090647026?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="tears, OYO, drowsyy - актриса" vid="110"></iframe>
         </div>
@@ -606,7 +689,7 @@
       </section>
 
       <section class="project-section" style="--left:66%; --top:53%; --tx:7%; --ty:12%; --mx:7%; --my:80%;" vid="117">
-        <a class="project-title" href="https://www.instagram.com/p/DJo9Dstsl9D" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.4rem, 5vw, 4rem); color:#d7d5d2;" vid="118">KAYYO, EMI4KA<br vid="119">OVERHYPE SAMPLE KIT</a>
+        <a class="project-title" href="https://vimeo.com/1090646413" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.4rem, 5vw, 4rem); color:#d7d5d2;" vid="118">KAYYO, EMI4KA<br vid="119">OVERHYPE SAMPLE KIT</a>
         <div class="video-container" style="--w:240; --h:240; --s:1.8; --video-bg:#f4f3f1;" vid="120">
           <iframe src="https://player.vimeo.com/video/1090646413?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="kayyo, emi4ka - overhype sample kit" vid="121"></iframe>
         </div>
@@ -643,19 +726,259 @@
     </div>
   </footer>
 
+  <script src="https://player.vimeo.com/api/player.js"></script>
   <script vid="141">
-    document.addEventListener('mousemove', (e) => {
+    const previewMap = {
+      "1090646757": { mp4: "./assets/previews/mp4/sqwore-ohwow.mp4", poster: "./assets/previews/posters/sqwore-ohwow.webp" },
+      "1163047065": { mp4: "./assets/previews/mp4/sqwore-drunk.mp4", poster: "./assets/previews/posters/sqwore-drunk.webp" },
+      "1163048368": { mp4: "./assets/previews/mp4/sqwore-tour-screens.mp4", poster: "./assets/previews/posters/sqwore-tour-screens.webp" },
+      "1090666938": { mp4: "./assets/previews/mp4/kayyo-ilm.mp4", poster: "./assets/previews/posters/kayyo-ilm.webp" },
+      "1163049988": { mp4: "./assets/previews/mp4/modeus-i-want-more.mp4", poster: "./assets/previews/posters/modeus-i-want-more.webp" },
+      "1090653148": { mp4: "./assets/previews/mp4/sqwore-protagonist.mp4", poster: "./assets/previews/posters/sqwore-protagonist.webp" },
+      "1163049663": { mp4: "./assets/previews/mp4/eikko-serious-sam.mp4", poster: "./assets/previews/posters/eikko-serious-sam.webp" },
+      "1163049430": { mp4: "./assets/previews/mp4/sqwore-beach-episode.mp4", poster: "./assets/previews/posters/sqwore-beach-episode.webp" },
+      "1090647765": { mp4: "./assets/previews/mp4/thes1cko-molniya-mcqueen.mp4", poster: "./assets/previews/posters/thes1cko-molniya-mcqueen.webp" },
+      "1090647026": { mp4: "./assets/previews/mp4/tears-oyo-drowsyy-aktrisa.mp4", poster: "./assets/previews/posters/tears-oyo-drowsyy-aktrisa.webp" },
+      "1090646413": { mp4: "./assets/previews/mp4/kayyo-emi4ka-overhype-sample-kit.mp4", poster: "./assets/previews/posters/kayyo-emi4ka-overhype-sample-kit.webp" }
+    };
+
+    const vimeoState = new WeakMap();
+    const pendingVimeoInit = [];
+    let vimeoApiReady = typeof window.Vimeo !== "undefined" && typeof window.Vimeo.Player === "function";
+
+    const vimeoApiScript = document.querySelector('script[src*="player.vimeo.com/api/player.js"]');
+    if (vimeoApiScript) {
+      vimeoApiScript.addEventListener("load", () => {
+        vimeoApiReady = typeof window.Vimeo !== "undefined" && typeof window.Vimeo.Player === "function";
+        flushPendingVimeoInit();
+      });
+    }
+
+    function toPlayerSrc(rawSrc, videoId) {
+      if (rawSrc && rawSrc.includes("player.vimeo.com/video/")) {
+        return rawSrc;
+      }
+      if (videoId === "1090666938") {
+        return "https://player.vimeo.com/video/1090666938?h=bf2ee708f9&badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1";
+      }
+      return `https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1`;
+    }
+
+    function safePlayMedia(el) {
+      if (!el || typeof el.play !== "function") {
+        return;
+      }
+      const playback = el.play();
+      if (playback && typeof playback.catch === "function") {
+        playback.catch(() => {});
+      }
+    }
+
+    function loadPreview(container) {
+      const video = container.querySelector(".preview-video");
+      if (!video || video.dataset.loaded === "1") {
+        return;
+      }
+
+      video.querySelectorAll("source[data-src]").forEach((source) => {
+        source.src = source.dataset.src;
+        source.removeAttribute("data-src");
+      });
+      video.load();
+      video.dataset.loaded = "1";
+    }
+
+    function revealVimeo(container) {
+      if (container.classList.contains("vimeo-ready")) {
+        return;
+      }
+      container.classList.add("vimeo-ready");
+      const previewVideo = container.querySelector(".preview-video");
+      if (previewVideo) {
+        previewVideo.pause();
+      }
+    }
+
+    function initVimeoPlayer(container) {
+      if (!vimeoApiReady) {
+        pendingVimeoInit.push(container);
+        return;
+      }
+
+      const state = vimeoState.get(container) || {};
+      if (state.player) {
+        return;
+      }
+
+      const iframe = container.querySelector(".vimeo-frame");
+      if (!iframe) {
+        return;
+      }
+
+      const player = new window.Vimeo.Player(iframe);
+      state.player = player;
+      vimeoState.set(container, state);
+
+      player.on("play", () => {
+        revealVimeo(container);
+      });
+
+      player.ready()
+        .then(() => {
+          revealVimeo(container);
+          return player.play();
+        })
+        .catch(() => {});
+    }
+
+    function flushPendingVimeoInit() {
+      while (pendingVimeoInit.length) {
+        const container = pendingVimeoInit.shift();
+        if (container) {
+          initVimeoPlayer(container);
+        }
+      }
+    }
+
+    function loadVimeo(container) {
+      const iframe = container.querySelector(".vimeo-frame");
+      if (!iframe || iframe.dataset.loaded === "1") {
+        return;
+      }
+
+      const src = iframe.dataset.vimeoSrc;
+      if (!src) {
+        return;
+      }
+
+      iframe.src = src;
+      iframe.dataset.loaded = "1";
+      iframe.addEventListener("load", () => {
+        window.setTimeout(() => {
+          revealVimeo(container);
+        }, 420);
+      }, { once: true });
+      initVimeoPlayer(container);
+    }
+
+    function buildVideoLayers() {
+      document.querySelectorAll(".video-container iframe").forEach((iframe) => {
+        iframe.classList.add("vimeo-frame");
+
+        const container = iframe.closest(".video-container");
+        const section = container ? container.closest(".project-section") : null;
+        const projectTitle = section ? section.querySelector(".project-title") : null;
+        const fallbackHref = projectTitle ? projectTitle.getAttribute("href") : null;
+        const rawSrc = iframe.getAttribute("src") || "";
+        const idMatch = rawSrc.match(/video\/(\d+)/) || (fallbackHref ? fallbackHref.match(/vimeo\.com\/(\d+)/) : null);
+
+        if (!container || !idMatch) {
+          return;
+        }
+
+        const videoId = idMatch[1];
+        const previewData = previewMap[videoId];
+        if (!previewData) {
+          return;
+        }
+
+        const previewLink = document.createElement("a");
+        previewLink.className = "video-preview-link";
+        previewLink.href = fallbackHref || `https://vimeo.com/${videoId}`;
+        previewLink.target = "_blank";
+        previewLink.rel = "noopener noreferrer";
+        previewLink.setAttribute("aria-label", "Open on Vimeo");
+
+        const previewVideo = document.createElement("video");
+        previewVideo.className = "preview-video";
+        previewVideo.muted = true;
+        previewVideo.loop = true;
+        previewVideo.playsInline = true;
+        previewVideo.preload = "none";
+        previewVideo.poster = previewData.poster;
+        previewVideo.setAttribute("disablepictureinpicture", "");
+
+        const source = document.createElement("source");
+        source.dataset.src = previewData.mp4;
+        source.type = "video/mp4";
+        previewVideo.appendChild(source);
+        previewLink.appendChild(previewVideo);
+
+        container.insertBefore(previewLink, iframe);
+        iframe.dataset.vimeoSrc = toPlayerSrc(rawSrc, videoId);
+        iframe.removeAttribute("src");
+      });
+    }
+
+    function setupHybridVideoLoading() {
+      const containers = Array.from(document.querySelectorAll(".video-container"));
+      if (!containers.length) {
+        return;
+      }
+
+      const activateContainer = (container) => {
+        loadPreview(container);
+        const previewVideo = container.querySelector(".preview-video");
+        safePlayMedia(previewVideo);
+        loadVimeo(container);
+
+        const state = vimeoState.get(container);
+        if (state && state.player && container.classList.contains("vimeo-ready")) {
+          state.player.play().catch(() => {});
+        }
+      };
+
+      const deactivateContainer = (container) => {
+        const previewVideo = container.querySelector(".preview-video");
+        if (previewVideo) {
+          previewVideo.pause();
+        }
+
+        const state = vimeoState.get(container);
+        if (state && state.player) {
+          state.player.pause().catch(() => {});
+        }
+      };
+
+      if (!("IntersectionObserver" in window)) {
+        containers.forEach((container) => activateContainer(container));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            activateContainer(entry.target);
+          } else {
+            deactivateContainer(entry.target);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: "320px 0px",
+        threshold: 0.18
+      });
+
+      containers.forEach((container) => observer.observe(container));
+      containers.slice(0, 2).forEach((container) => activateContainer(container));
+    }
+
+    buildVideoLayers();
+    setupHybridVideoLoading();
+
+    document.addEventListener("mousemove", (e) => {
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
 
-      document.querySelectorAll('.decor-v1-blob, .decor-v3-blob, .footer-circle').forEach((blob) => {
+      document.querySelectorAll(".decor-v1-blob, .decor-v3-blob, .footer-circle").forEach((blob) => {
         blob.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
       });
 
-      document.querySelectorAll('.project-title').forEach((title) => {
+      document.querySelectorAll(".project-title").forEach((title) => {
         title.style.transform = `translate(${x * -9}px, ${y * -9}px)`;
       });
     });
   </script>
 </body>
 </html>
+
