@@ -817,15 +817,28 @@
 
       const player = new window.Vimeo.Player(iframe);
       state.player = player;
+      state.revealed = false;
       vimeoState.set(container, state);
 
-      player.on("play", () => {
+      const revealWhenPlaying = () => {
+        if (state.revealed) {
+          return;
+        }
+        state.revealed = true;
         revealVimeo(container);
+      };
+
+      // Show Vimeo only when frames are actually playing, not while player UI is loading.
+      player.on("playing", revealWhenPlaying);
+      player.on("timeupdate", (data) => {
+        if (data && typeof data.seconds === "number" && data.seconds > 0.02) {
+          revealWhenPlaying();
+        }
       });
 
       player.ready()
         .then(() => {
-          revealVimeo(container);
+          player.setVolume(0).catch(() => {});
           return player.play();
         })
         .catch(() => {});
@@ -853,11 +866,6 @@
 
       iframe.src = src;
       iframe.dataset.loaded = "1";
-      iframe.addEventListener("load", () => {
-        window.setTimeout(() => {
-          revealVimeo(container);
-        }, 420);
-      }, { once: true });
       initVimeoPlayer(container);
     }
 
@@ -894,8 +902,8 @@
         previewVideo.muted = true;
         previewVideo.loop = true;
         previewVideo.playsInline = true;
+        previewVideo.autoplay = true;
         previewVideo.preload = "auto";
-        previewVideo.poster = previewData.poster;
         previewVideo.setAttribute("disablepictureinpicture", "");
 
         const source = document.createElement("source");
