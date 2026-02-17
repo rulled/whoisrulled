@@ -10,7 +10,16 @@
       ]
     },
     {
-      "source": "/assets/(.*\\.(otf|ttf))",
+      "source": "/assets/(.*\\.otf)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*\\.ttf)",
       "headers": [
         {
           "key": "Cache-Control",
