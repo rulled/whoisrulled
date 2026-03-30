@@ -4,6 +4,7 @@
   <meta charset="UTF-8" vid="2">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
   <title vid="4">Maxim Pavlov / Motion Mobile</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050709'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='22' fill='%23f2f6f8'%3EMP%3C/text%3E%3C/svg%3E">
   <script>
     (function () {
       var isMobilePage = /\/mobile\.html$/i.test(window.location.pathname);
@@ -187,6 +188,27 @@
     .projects .project-section:nth-child(10) { --mty: 62%; --mta: left; --mly: 49%; --ms: 1; --mpl: 1%; --mpr: 12%; }
     .projects .project-section:nth-child(11) { --mty: 10%; --mta: right; --mly: 66%; --ms: 1.1; --mpl: 1%; --mpr: 1%; }
 
+    .project-link {
+      position: absolute;
+      inset: 0;
+      display: block;
+      z-index: 12;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-link:focus-visible {
+      outline: none;
+    }
+
+    .project-link:focus-visible .video-container {
+      box-shadow: 0 0 0 2px rgba(242, 246, 248, 0.9), 0 0 0 5px rgba(59, 154, 227, 0.28);
+    }
+
+    .project-link:focus-visible .project-title {
+      text-shadow: 0 0 16px rgba(59, 154, 227, 0.48);
+    }
+
     .video-container {
       position: absolute;
       left: 0.6rem !important;
@@ -200,14 +222,51 @@
       z-index: 4;
       overflow: hidden;
       border: none;
+      pointer-events: none;
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.34);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.08), transparent 24%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 42%),
+        linear-gradient(180deg, rgba(3, 5, 8, 0.08), rgba(3, 5, 8, 0.56)),
+        var(--video-bg, #101218);
     }
 
-    .video-link {
-      display: block;
-      width: 100%;
-      height: 100%;
-      text-decoration: none;
-      color: inherit;
+    .video-container::before,
+    .video-container::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      transition: opacity 280ms ease, transform 720ms ease;
+    }
+
+    .video-container::before {
+      inset: -14%;
+      background: linear-gradient(112deg, transparent 24%, rgba(255, 255, 255, 0.16) 48%, transparent 70%);
+      transform: translateX(-52%);
+      opacity: 0.78;
+      animation: preview-sheen 4.2s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+
+    .video-container::after {
+      right: -5%;
+      bottom: -10%;
+      width: 34%;
+      height: 48%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 68%);
+      filter: blur(22px);
+      opacity: 0.44;
+    }
+
+    .video-container.is-ready::before,
+    .video-container.is-ready::after {
+      opacity: 0;
+      animation: none;
+    }
+
+    .video-container.is-ready::before {
+      transform: translateX(18%);
     }
 
     .preview-video {
@@ -216,6 +275,17 @@
       display: block;
       object-fit: cover;
       background: var(--video-bg, #101218);
+      opacity: 0;
+      transform: scale(1.035);
+      filter: saturate(0.92) contrast(0.96);
+      transition: opacity 320ms ease, transform 820ms cubic-bezier(0.19, 1, 0.22, 1), filter 320ms ease;
+      will-change: opacity, transform;
+    }
+
+    .video-container.is-ready .preview-video {
+      opacity: 1;
+      transform: scale(1);
+      filter: none;
     }
 
     .project-title {
@@ -238,9 +308,33 @@
       word-break: keep-all;
       hyphens: none;
       z-index: 12;
-      pointer-events: auto;
-      text-decoration: none;
+      pointer-events: none;
       color: inherit;
+    }
+
+    @keyframes preview-sheen {
+      0% {
+        transform: translateX(-58%);
+      }
+
+      50% {
+        transform: translateX(12%);
+      }
+
+      100% {
+        transform: translateX(54%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .video-container::before {
+        animation: none;
+      }
+
+      .preview-video {
+        transform: none;
+        transition: opacity 180ms ease;
+      }
     }
 
     .decor-v1-blob,
@@ -572,144 +666,122 @@
 
   <main vid="15">
     <div class="projects" vid="16">
-      <section class="project-section" style="--left:58%; --top:54%; --tx:7%; --ty:6%; --mx:7%; --my:82%;" vid="17">
-        <a class="project-title" href="https://vimeo.com/1090646757" target="_blank" rel="noopener noreferrer" vid="18">SQWORE<br vid="19">OHWOW</a>
-        <div class="video-container" style="--w:426; --h:240; --s:1.7; --video-bg:#0d1312;" vid="20">
-                    <a class="video-link" href="https://vimeo.com/1090646757" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/sqwore-ohwow.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/sqwore-ohwow.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090646757" style="--left:58%; --top:54%; --tx:7%; --ty:6%; --mx:7%; --my:82%;" vid="17">
+        <a class="project-link" href="https://vimeo.com/1090646757" target="_blank" rel="noopener noreferrer">
+          <span class="project-title">SQWORE<br>OHWOW</span>
+          <div class="video-container" style="--w:426; --h:240; --s:1.7; --video-bg:#0d1312;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-blob" style="--bc:#143b28; --bw:430px; --bh:250px; --bx:-9%; --by:2%;" vid="22"></div>
         <div class="decor-v1-trunk" style="--rx:17%; --ry:16%;" vid="24"></div>
       </section>
 
-      <section class="project-section" style="--left:39%; --top:55%; --tx:60%; --ty:13%; --ta:right; --mx:60%; --my:81%;" vid="26">
-        <a class="project-title" href="https://vimeo.com/1163047065" target="_blank" rel="noopener noreferrer" vid="27">SQWORE<br vid="28">DRUNK</a>
-        <div class="video-container" style="--w:426; --h:240; --s:1.64; --video-bg:#121f24;" vid="29">
-                    <a class="video-link" href="https://vimeo.com/1163047065" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/sqwore-drunk.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/sqwore-drunk.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1163047065" style="--left:39%; --top:55%; --tx:60%; --ty:13%; --ta:right; --mx:60%; --my:81%;" vid="26">
+        <a class="project-link" href="https://vimeo.com/1163047065" target="_blank" rel="noopener noreferrer">
+          <span class="project-title">SQWORE<br>DRUNK</span>
+          <div class="video-container" style="--w:426; --h:240; --s:1.64; --video-bg:#121f24;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v3-blob" style="--cc:#1b5878; --cw:340px; --ch:160px; --cx:8%; --cy:5%;" vid="32"></div>
         <div class="decor-v2-dots" style="--dx:68%; --dy:72%;" vid="33"><div class="orange-dot" vid="34"></div><div class="orange-dot" vid="35"></div><div class="orange-dot" vid="36"></div></div>
       </section>
 
-      <section class="project-section" style="--left:61%; --top:58%; --tx:8%; --ty:66%; --mx:8%; --my:14%;" vid="38">
-        <a class="project-title" href="https://vimeo.com/1163048368" target="_blank" rel="noopener noreferrer" vid="39">SQWORE TOUR<br vid="40">SCREENS</a>
-        <div class="video-container" style="--w:426; --h:240; --s:1.74; --video-bg:#23210d;" vid="41">
-                    <a class="video-link" href="https://vimeo.com/1163048368" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/sqwore-tour-screens.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/sqwore-tour-screens.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1163048368" style="--left:61%; --top:58%; --tx:8%; --ty:66%; --mx:8%; --my:14%;" vid="38">
+        <a class="project-link" href="https://vimeo.com/1163048368" target="_blank" rel="noopener noreferrer">
+          <span class="project-title">SQWORE TOUR<br>SCREENS</span>
+          <div class="video-container" style="--w:426; --h:240; --s:1.74; --video-bg:#23210d;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-blob" style="--bc:#6e6520; --bw:460px; --bh:210px; --bx:58%; --by:4%;" vid="43"></div>
       </section>
 
-      <section class="project-section" style="--left:32%; --top:50%; --tx:57%; --ty:9%; --ta:right; --mx:57%; --my:76%;" vid="47">
-        <a class="project-title" href="https://vimeo.com/1090666938/bf2ee708f9" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.8rem, 6.8vw, 6rem);" vid="48">KAYYO<br vid="49">ILM</a>
-        <div class="video-container" style="--w:300; --h:240; --s:1.8; --maxw:72vw; --video-bg:#010101;" vid="50">
-                    <a class="video-link" href="https://vimeo.com/1090666938/bf2ee708f9" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/kayyo-ilm.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/kayyo-ilm.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090666938" style="--left:32%; --top:50%; --tx:57%; --ty:9%; --ta:right; --mx:57%; --my:76%;" vid="47">
+        <a class="project-link" href="https://vimeo.com/1090666938/bf2ee708f9" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.8rem, 6.8vw, 6rem);">KAYYO<br>ILM</span>
+          <div class="video-container" style="--w:300; --h:240; --s:1.8; --maxw:72vw; --video-bg:#010101;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v3-blob" style="--cc:#0b2a3d; --cw:320px; --ch:220px; --cx:4%; --cy:16%;" vid="52"></div>
         <div class="decor-crosshair" style="--cx3:14%; --cy3:18%; --cc3:var(--accent-pink); --cz:30px; --ct:7px;" vid="53"></div>
         <div class="decor-crosshair" style="--cx3:24%; --cy3:28%; --cc3:var(--accent-blue); --cz:26px; --ct:7px;" vid="54"></div>
       </section>
 
-      <section class="project-section" style="--left:66%; --top:54%; --tx:7%; --ty:12%; --mx:7%; --my:78%;" vid="59">
-        <a class="project-title" href="https://vimeo.com/1163049988" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.7rem, 6.2vw, 5.2rem);" vid="60">МОДЕУС<br vid="61">I WANT MORE</a>
-        <div class="video-container" style="--w:300; --h:240; --s:1.7; --video-bg:#292a2b;" vid="62">
-                    <a class="video-link" href="https://vimeo.com/1163049988" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/modeus-i-want-more.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/modeus-i-want-more.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1163049988" style="--left:66%; --top:54%; --tx:7%; --ty:12%; --mx:7%; --my:78%;" vid="59">
+        <a class="project-link" href="https://vimeo.com/1163049988" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.7rem, 6.2vw, 5.2rem);">МОДЕУС<br>I WANT MORE</span>
+          <div class="video-container" style="--w:300; --h:240; --s:1.7; --video-bg:#292a2b;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-blob" style="--bc:#696c6f; --bw:280px; --bh:210px; --bx:67%; --by:-6%;" vid="64"></div>
         <div class="decor-crosshair" style="--cx3:40%; --cy3:72%; --cc3:#9aaab8; --cz:143px; --ct:16px; --cr:12deg;" vid="64b"></div>
       </section>
 
-      <section class="project-section" style="--left:42%; --top:56%; --tx:54%; --ty:63%; --ta:right; --mx:54%; --my:16%;" vid="67">
-        <a class="project-title" href="https://vimeo.com/1090653148" target="_blank" rel="noopener noreferrer" style="color:#d5dbd4; font-size:clamp(2rem, 7.3vw, 6.6rem);" vid="68">SQWORE<br vid="69">PROTAGONIST</a>
-        <div class="video-container" style="--w:360; --h:240; --s:1.7; --video-bg:#b9c0b8;" vid="70">
-                    <a class="video-link" href="https://vimeo.com/1090653148" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/sqwore-protagonist.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/sqwore-protagonist.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090653148" style="--left:42%; --top:56%; --tx:54%; --ty:63%; --ta:right; --mx:54%; --my:16%;" vid="67">
+        <a class="project-link" href="https://vimeo.com/1090653148" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="color:#d5dbd4; font-size:clamp(2rem, 7.3vw, 6.6rem);">SQWORE<br>PROTAGONIST</span>
+          <div class="video-container" style="--w:360; --h:240; --s:1.7; --video-bg:#b9c0b8;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-trunk" style="--rx:72%; --ry:48px; background:#b1c0b4; height:130px;" vid="72"></div>
         <div class="decor-v2-dots" style="--dx:57%; --dy:25%;" vid="73"><div class="orange-dot" vid="74"></div><div class="orange-dot" vid="75"></div><div class="orange-dot" vid="76"></div></div>
       </section>
 
-      <section class="project-section" style="--left:64%; --top:51%; --tx:8%; --ty:11%; --mx:8%; --my:79%;" vid="78">
-        <a class="project-title" href="https://vimeo.com/1163049663" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.9rem, 7.3vw, 6.2rem);" vid="79">EIKKO<br vid="80">SERIOUS SAM</a>
-        <div class="video-container" style="--w:320; --h:240; --s:1.72; --video-bg:#061319;" vid="81">
-                    <a class="video-link" href="https://vimeo.com/1163049663" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/eikko-serious-sam.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/eikko-serious-sam.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1163049663" style="--left:64%; --top:51%; --tx:8%; --ty:11%; --mx:8%; --my:79%;" vid="78">
+        <a class="project-link" href="https://vimeo.com/1163049663" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.9rem, 7.3vw, 6.2rem);">EIKKO<br>SERIOUS SAM</span>
+          <div class="video-container" style="--w:320; --h:240; --s:1.72; --video-bg:#061319;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v3-blob" style="--cc:#0f4f6f; --cw:420px; --ch:180px; --cx:-3%; --cy:3%;" vid="83"></div>
       </section>
 
-      <section class="project-section" style="--left:37%; --top:57%; --tx:58%; --ty:10%; --ta:right; --mx:58%; --my:80%;" vid="86">
-        <a class="project-title" href="https://vimeo.com/1163049430" target="_blank" rel="noopener noreferrer" vid="87">SQWORE<br vid="88">BEACH EPISODE</a>
-        <div class="video-container" style="--w:426; --h:240; --s:1.72; --video-bg:#718aca;" vid="89">
-                    <a class="video-link" href="https://vimeo.com/1163049430" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/sqwore-beach-episode.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/sqwore-beach-episode.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1163049430" style="--left:37%; --top:57%; --tx:58%; --ty:10%; --ta:right; --mx:58%; --my:80%;" vid="86">
+        <a class="project-link" href="https://vimeo.com/1163049430" target="_blank" rel="noopener noreferrer">
+          <span class="project-title">SQWORE<br>BEACH EPISODE</span>
+          <div class="video-container" style="--w:426; --h:240; --s:1.72; --video-bg:#718aca;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-blob" style="--bc:#5e7fcb; --bw:410px; --bh:220px; --bx:55%; --by:58%;" vid="91"></div>
         <div class="decor-line-sun" style="--sx2:72%; --sy2:32%; --ss:82px; --sc2:#dce9a8;" vid="91a"></div>
         <div class="decor-v2-dots" style="--dx:20%; --dy:19%;" vid="92"><div class="orange-dot" vid="93"></div><div class="orange-dot" vid="94"></div><div class="orange-dot" vid="95"></div><div class="orange-dot" vid="96"></div></div>
       </section>
 
-      <section class="project-section" style="--left:59%; --top:53%; --tx:9%; --ty:67%; --mx:9%; --my:18%;" vid="98">
-        <a class="project-title" href="https://vimeo.com/1090647765" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.6rem, 6vw, 4.8rem); color:#e1f2ea;" vid="99">THES1CKO<br vid="100">МОЛНИЯ MCQUEEN</a>
-        <div class="video-container" style="--w:426; --h:174; --s:1.72; --video-bg:#d7f6e9;" vid="101">
-                    <a class="video-link" href="https://vimeo.com/1090647765" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/thes1cko-molniya-mcqueen.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/thes1cko-molniya-mcqueen.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090647765" style="--left:59%; --top:53%; --tx:9%; --ty:67%; --mx:9%; --my:18%;" vid="98">
+        <a class="project-link" href="https://vimeo.com/1090647765" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.6rem, 6vw, 4.8rem); color:#e1f2ea;">THES1CKO<br>МОЛНИЯ MCQUEEN</span>
+          <div class="video-container" style="--w:426; --h:174; --s:1.72; --video-bg:#d7f6e9;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-star-4" style="--sx:63%; --sy:37%; --ss2:140px; --sc:#a8d8c3; --sr:-54deg;" vid="103"></div>
       </section>
 
-      <section class="project-section" style="--left:44%; --top:55%; --tx:58%; --ty:13%; --ta:right; --mx:58%; --my:79%;" vid="106">
-        <a class="project-title" href="https://vimeo.com/1090647026" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.5rem, 5.8vw, 4.6rem);" vid="107">TEARS, OYO, DROWSYY<br vid="108">АКТРИСА</a>
-        <div class="video-container" style="--w:426; --h:182; --s:1.72; --video-bg:#0c1522;" vid="109">
-                    <a class="video-link" href="https://vimeo.com/1090647026" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/tears-oyo-drowsyy-aktrisa.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/tears-oyo-drowsyy-aktrisa.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090647026" style="--left:44%; --top:55%; --tx:58%; --ty:13%; --ta:right; --mx:58%; --my:79%;" vid="106">
+        <a class="project-link" href="https://vimeo.com/1090647026" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.5rem, 5.8vw, 4.6rem);">TEARS, OYO, DROWSYY<br>АКТРИСА</span>
+          <div class="video-container" style="--w:426; --h:182; --s:1.72; --video-bg:#0c1522;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v3-blob" style="--cc:#35577a; --cw:410px; --ch:220px; --cx:58%; --cy:-5%;" vid="111"></div>
         <div class="decor-v2-dots" style="--dx:12%; --dy:74%;" vid="112"><div class="orange-dot" vid="113"></div><div class="orange-dot" vid="114"></div><div class="orange-dot" vid="115"></div></div>
       </section>
 
-      <section class="project-section" style="--left:66%; --top:53%; --tx:7%; --ty:12%; --mx:7%; --my:80%;" vid="117">
-        <a class="project-title" href="https://vimeo.com/1090646413" target="_blank" rel="noopener noreferrer" style="font-size:clamp(1.4rem, 5vw, 4rem); color:#d7d5d2;" vid="118">KAYYO, EMI4KA<br vid="119">OVERHYPE SAMPLE KIT</a>
-        <div class="video-container" style="--w:240; --h:240; --s:1.8; --video-bg:#f4f3f1;" vid="120">
-                    <a class="video-link" href="https://vimeo.com/1090646413" target="_blank" rel="noopener noreferrer" aria-label="Open on Vimeo">
-            <video class="preview-video" muted loop playsinline preload="none" poster="./assets/previews/posters/kayyo-emi4ka-overhype-sample-kit.webp" disablepictureinpicture>
-              <source data-src="./assets/previews/mp4/kayyo-emi4ka-overhype-sample-kit.mp4" type="video/mp4">
-            </video>
-          </a>
-        </div>
+      <section class="project-section" data-video-id="1090646413" style="--left:66%; --top:53%; --tx:7%; --ty:12%; --mx:7%; --my:80%;" vid="117">
+        <a class="project-link" href="https://vimeo.com/1090646413" target="_blank" rel="noopener noreferrer">
+          <span class="project-title" style="font-size:clamp(1.4rem, 5vw, 4rem); color:#d7d5d2;">KAYYO, EMI4KA<br>OVERHYPE SAMPLE KIT</span>
+          <div class="video-container" style="--w:240; --h:240; --s:1.8; --video-bg:#f4f3f1;">
+            <video class="preview-video" aria-hidden="true" tabindex="-1" muted loop playsinline autoplay preload="none" disablepictureinpicture disableremoteplayback></video>
+          </div>
+        </a>
         <div class="decor-v1-blob" style="--bc:#c7c5bf; --bw:300px; --bh:230px; --bx:62%; --by:6%;" vid="122"></div>
       </section>
     </div>
@@ -763,61 +835,6 @@
       applyParallax(e.clientX, e.clientY);
     });
 
-    const initPreviewVideos = () => {
-      const videos = Array.from(document.querySelectorAll(".preview-video"));
-      if (!videos.length) {
-        return;
-      }
-
-      const loadVideo = (video) => {
-        if (video.dataset.loaded === "1") {
-          return;
-        }
-
-        video.preload = "auto";
-        video.querySelectorAll("source[data-src]").forEach((source) => {
-          source.src = source.dataset.src;
-          source.removeAttribute("data-src");
-        });
-
-        video.load();
-        video.dataset.loaded = "1";
-      };
-
-      const playVideo = (video) => {
-        loadVideo(video);
-        const promise = video.play();
-        if (promise && typeof promise.catch === "function") {
-          promise.catch(() => {});
-        }
-      };
-
-      // Load all previews up-front so scrolling does not reveal unloaded videos.
-      videos.forEach((video) => loadVideo(video));
-
-      if (!("IntersectionObserver" in window)) {
-        videos.forEach(playVideo);
-        return;
-      }
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target;
-          if (entry.isIntersecting) {
-            playVideo(video);
-          } else {
-            video.pause();
-          }
-        });
-      }, {
-        root: null,
-        rootMargin: "1000px 0px",
-        threshold: 0.01
-      });
-
-      videos.forEach((video) => observer.observe(video));
-    };
-
     const fitProjectTitles = () => {
       const coarse = window.matchMedia("(pointer: coarse)").matches;
       const viewport = window.innerWidth;
@@ -851,7 +868,6 @@
     };
 
     window.addEventListener("load", () => {
-      initPreviewVideos();
       fitProjectTitles();
     });
     window.addEventListener("resize", fitProjectTitles);
@@ -862,6 +878,26 @@
     } else {
       requestAnimationFrame(fitProjectTitles);
     }
+  </script>
+  <script src="./assets/preview-video-loader.js"></script>
+  <script>
+    window.setupPreviewVideos({
+      baseEagerCount: 1,
+      loadMargin: 280,
+      previewMap: {
+        "1090646757": { webm: "./assets/previews/video/mobile/sqwore-ohwow.webm" },
+        "1163047065": { webm: "./assets/previews/video/mobile/sqwore-drunk.webm" },
+        "1163048368": { webm: "./assets/previews/video/mobile/sqwore-tour-screens.webm" },
+        "1090666938": { webm: "./assets/previews/video/mobile/kayyo-ilm.webm" },
+        "1163049988": { webm: "./assets/previews/video/mobile/modeus-i-want-more.webm" },
+        "1090653148": { webm: "./assets/previews/video/mobile/sqwore-protagonist.webm" },
+        "1163049663": { webm: "./assets/previews/video/mobile/eikko-serious-sam.webm" },
+        "1163049430": { webm: "./assets/previews/video/mobile/sqwore-beach-episode.webm" },
+        "1090647765": { webm: "./assets/previews/video/mobile/thes1cko-molniya-mcqueen.webm" },
+        "1090647026": { webm: "./assets/previews/video/mobile/tears-oyo-drowsyy-aktrisa.webm" },
+        "1090646413": { webm: "./assets/previews/video/mobile/kayyo-emi4ka-overhype-sample-kit.webm" }
+      }
+    });
   </script>
 </body>
 </html>
